@@ -1,7 +1,7 @@
 # data, run outputs, models (never commit)
-data/
-runs/
-models/
+/data/
+/runs/
+/models/
 *.pt
 *.pth
 *.ckpt
