@@ -1,0 +1,6 @@
+# Band edges are DESIGN CHOICES unless a source is given. Never present a design band as a TNAU rule.
+# The only TNAU threshold found by the research is ~5% leaf area for blast; re-confirm on the TNAU page
+# before setting origin: tnau.
+default:
+  edges_pct: [5, 25]
+  origin: design

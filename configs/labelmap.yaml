@@ -1,0 +1,48 @@
+# Class harmonisation across datasets. T1 and T2 maps are deliberately empty: fill them from the
+# real folder names (ARCHITECTURE.md M3) once the developer confirms the mapping.
+canonical:            # order defines class indices for the 4-class shared space
+  - bacterial_leaf_blight
+  - blast
+  - brown_spot
+  - tungro
+extra_source_classes:  # Paddy Doctor-only, used for in-domain training and in-domain test only
+  - normal
+  - bacterial_leaf_streak
+  - bacterial_panicle_blight
+  - dead_heart
+  - downy_mildew
+  - hispa
+map:
+  # Keys are raw labels exactly as shipped (folder names), values are canonical / extra class names.
+  S:   # Paddy Doctor train_images/<class> folders: identity
+    bacterial_leaf_blight: bacterial_leaf_blight
+    blast: blast
+    brown_spot: brown_spot
+    tungro: tungro
+    normal: normal
+    bacterial_leaf_streak: bacterial_leaf_streak
+    bacterial_panicle_blight: bacterial_panicle_blight
+    dead_heart: dead_heart
+    downy_mildew: downy_mildew
+    hispa: hispa
+  T1:  # Sethy class folders (4 classes per the Project Guide)
+    Bacterialblight: bacterial_leaf_blight
+    Blast: blast
+    Brownspot: brown_spot
+    Tungro: tungro
+  T2:  # Dhan-Shomadhan class folders; typos are as shipped. null = no Paddy Doctor counterpart
+       # (image kept in the manifest, excluded from the shared label space).
+    # Field Background: mapping confirmed by the developer from a 5-image montage per folder (2026-10-19)
+    "Browon Spot": brown_spot
+    "Rice Blast": blast
+    "Rice Turgro": tungro
+    # White Background: mapped by folder name only (not visually checked); used for the T2-white row
+    "Brown Spot": brown_spot
+    "Rice Tungro": tungro
+    # (white "Rice Blast" is the same key as field "Rice Blast" above)
+    "Leaf Scaled": null
+    "Sheath Blight": null
+    "Shath Blight": null
+shared:
+  S_T1: [bacterial_leaf_blight, blast, brown_spot, tungro]
+  S_T2: [blast, brown_spot, tungro]

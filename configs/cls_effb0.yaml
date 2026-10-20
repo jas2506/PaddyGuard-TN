@@ -1,0 +1,16 @@
+model: efficientnet_b0
+img_size: 224
+epochs: 15
+batch_size: 64
+optimizer: {name: adamw, lr: 3.0e-4, weight_decay: 0.01}
+scheduler: {name: cosine, warmup_epochs: 1}
+loss: {name: ce, label_smoothing: 0.1}
+amp: true
+augmentation: baseline                   # baseline | strong | strong_mixstyle
+seed: 0
+early_stopping: {metric: val_macro_f1, patience: 4}
+pretrained: true                         # ImageNet weights from the timm hub (needs internet on first use)
+num_workers: 2                           # 2 to 4 on Kaggle (4 CPU cores)
+acceptance:                              # ARCHITECTURE.md M4: clearly above 90% macro-F1, no class below 80% recall
+  min_macro_f1: 0.90
+  min_class_recall: 0.80

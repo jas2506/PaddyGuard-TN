@@ -1,0 +1,99 @@
+# Paths come from env vars PADDYGUARD_DATA / PADDYGUARD_OUT (see ARCHITECTURE.md M0); not set here.
+split_seed: 42
+dedup:
+  # Hamming-distance thresholds per dataset (phash distances are always even). Chosen from the pair-count
+  # histograms and the boundary pairs in reports/dedup_report.md and reports/figures/dedup_boundary_pairs.jpg.
+  hamming: {S: 8, T1: 14, T2: 4}
+  leakage_hamming: 8    # target image this close to a Paddy Doctor image is dropped
+  phash_size: 8
+  draft_size: 256       # JPEG draft decode size before hashing (speed; same for all images)
+  chunk_rows: 512       # rows of the pairwise-distance matrix computed at once
+  hist_max: 16          # report pair counts for Hamming distance 0..hist_max
+  boundary_pairs: 50    # pairs shown around the thresholds for review (spread over the five groups)
+  review_note: >-
+    Boundary pairs were reviewed visually during implementation (not by the developer; the sheet is
+    kept for a re-check). S at 8: pairs at 8-10 are near-identical shots of the same plot, so
+    grouping at 8 is the conservative choice. T1 at 14: pairs at 8-14 are shifted or zoomed copies of
+    the same leaf; pairs just above 14 were not inspected, so some duplicates may remain at larger
+    distances. T2 at 4: pairs at 4 are repeat shots of the same leaf, while pairs at 6 mix repeats and
+    different leaves on the same plain background (the threshold 8 merged different leaves into one
+    chain of 33). Cross-dataset pairs at 10-12 are visibly unrelated photos, so no leakage was found
+    at the leakage threshold of 8.
+splits:
+  S:  {train: 0.70, val: 0.15, test: 0.15}
+  T1: {seg_train: 0.70, seg_val: 0.15, seg_test: 0.15}
+  T2: {cal_pool: 0.40, test: 0.60}   # field-background images only, stratified by class (2026-10-19 decision)
+  T2_white: {zero_shot_only: true}   # 769 white-background images; no cal_pool, reported as T2-white
+low_n_test_per_class: 30             # T2 classes below this are kept but flagged low-n in every T2 table
+t2_cal_max_fraction_of_pool: 0.65    # T2 cal sizes (reliability.yaml) must be <= this fraction of the pool
+cache:
+  short_side: 256          # S and T2 only
+  T1_native: true          # Sethy is ~300 px: never downscale, cache the mask with identical geometry
+  jpeg_quality: 95
+
+# ---- M1: acquisition and manifests (paths are relative to PADDYGUARD_DATA) ----
+seed: 0                              # data-prep seed (debug subsampling, mask sampling)
+image_extensions: [".jpg", ".jpeg", ".png"]   # compared case-insensitively (Sethy mixes .jpg/.JPG)
+manifest_path: manifests/manifest.csv
+datasets:
+  S:
+    name: Paddy Doctor (Kaggle competition version)
+    root: raw/paddy_doctor
+    images_dir: train_images           # layout: <images_dir>/<class>/<file>.jpg
+    csv: train.csv                     # columns: image_id, label, variety, age
+    expected_count: 10407
+    source: "kaggle.com/c/paddy-disease-classification (join the competition and accept the rules)"
+  T1:
+    name: Sethy et al. (Rice Leaf Disease Image Samples)
+    root: raw/sethy
+    images_dir: images                 # layout: <images_dir>/<Class>/<file>
+    expected_count: 5932
+    source: "Mendeley Data, DOI 10.17632/fwcj7stb8r.1"
+  RiceSeg:
+    name: RiceSeg-5932 (pixel masks for the Sethy images)
+    root: raw/riceseg
+    masks_dir: masks                   # layout: <masks_dir>/<Class>/<same stem as the Sethy image>.jpg
+    expected_count: 5932
+    source: "Mendeley Data, DOI 10.17632/92jc6w6mcy.1"
+  T2:
+    name: Dhan-Shomadhan
+    root: raw/dhan
+    info_csv: Dhan-Shomadhan_picture_Information.csv   # columns: (index), pictureName, Diseases
+    backgrounds: {"Field Background": field, "White Background": white}   # folder -> manifest value
+    csv_background_aliases: {feild: field, field: field, white: white}   # spellings used inside the info CSV
+    expected_count: 1106
+    source: "Mendeley Data, DOI 10.17632/znsxdctwtt.1"
+licences:                            # licence text from each dataset page; null = not yet checked
+  # Text pasted by the developer on 2026-10-19, stated to apply to all four datasets.
+  S: &cc_by_4 >-
+    CC BY 4.0. The files associated with this dataset are licensed under a Creative Commons
+    Attribution 4.0 International licence. You can share, copy and modify this dataset so long as
+    you give appropriate credit, provide a link to the CC BY license, and indicate if changes were
+    made, but you may not do so in a way that suggests the rights holder has endorsed you or your
+    use of the dataset. Further permission may be required for any content within the dataset that
+    is identified as belonging to a third party.
+  T1: *cc_by_4
+  RiceSeg: *cc_by_4
+  T2: *cc_by_4
+debug:
+  n_images: 200                      # per dataset
+card_path: dataset_card.md           # under the reports directory
+mask_inspect:
+  n_masks: 50
+  n_overlays: 20
+  round_to: 16                       # mask values are rounded to a multiple of this before counting
+  hist_bins: 16
+  top_values: 8
+  overlay_dir: figures/mask_overlays # under the reports directory
+  note_path: mask_inspection.md      # under the reports directory
+# RiceSeg mask encoding: answers given by the developer after viewing the overlays (2026-10-19).
+# The cutoff of 128 was the example proposed in the M1 question; the developer confirmed that a
+# cutoff removes the JPEG noise. Remove this block to make the note ask the questions again.
+mask_encoding:
+  marks: lesions_only     # white = lesion; there is no leaf class, so a leaf mask is derived in M6
+  background_value: 0     # pure black
+  lesion_value: 255
+  threshold: 128          # pixel >= threshold counts as lesion
+
+# ---- M2: duplicates, splits, cache ----
+split_folds: {S: 20, T1: 20, T2: 5}  # ratios in `splits` x folds must be whole numbers (20 x 0.15 = 3)

@@ -1,0 +1,28 @@
+# data, run outputs, models (never commit)
+data/
+runs/
+models/
+*.pt
+*.pth
+*.ckpt
+*.parquet
+.env
+
+# python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+.DS_Store
+
+# Claude Code: CLAUDE.md and .claude/ are shared with collaborators;
+# only personal local files stay out of the repo
+CLAUDE.local.md
+.claude/settings.local.json
+Project Review/
+
+# data hand-off zip (shared outside git)
+*.zip

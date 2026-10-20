@@ -1,0 +1,7 @@
+alpha: 0.10                       # target coverage 90%
+borderline_delta_pct: 2           # default; tune on calibration data only
+cal_sizes:
+  T1: [25, 50, 100, 150]
+  T2: [25, 50, 100]   # candidates; keep only sizes <= data.yaml t2_cal_max_fraction_of_pool (0.65) * pool
+n_draws: 100
+ece_bins: 15
