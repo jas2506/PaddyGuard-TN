@@ -1,0 +1,16 @@
+2026-10-19 12:39:06,843 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 1/15 loss 2.2076 val macro-F1 0.6073 acc 0.6849
+2026-10-19 12:39:29,003 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 2/15 loss 0.9831 val macro-F1 0.7879 acc 0.8223
+2026-10-19 12:39:52,925 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 3/15 loss 0.7598 val macro-F1 0.8271 acc 0.8570
+2026-10-19 12:40:15,993 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 4/15 loss 0.6817 val macro-F1 0.8773 acc 0.8916
+2026-10-19 12:40:39,130 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 5/15 loss 0.6401 val macro-F1 0.8860 acc 0.9067
+2026-10-19 12:41:01,423 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 6/15 loss 0.6180 val macro-F1 0.9039 acc 0.9219
+2026-10-19 12:41:26,713 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 7/15 loss 0.6014 val macro-F1 0.9097 acc 0.9294
+2026-10-19 12:41:49,364 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 8/15 loss 0.5892 val macro-F1 0.9185 acc 0.9332
+2026-10-19 12:42:25,389 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 9/15 loss 0.5804 val macro-F1 0.9179 acc 0.9338
+2026-10-19 12:43:09,451 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 10/15 loss 0.5736 val macro-F1 0.9214 acc 0.9351
+2026-10-19 12:43:50,500 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 11/15 loss 0.5669 val macro-F1 0.9275 acc 0.9395
+2026-10-19 12:44:28,353 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 12/15 loss 0.5639 val macro-F1 0.9246 acc 0.9382
+2026-10-19 12:45:05,213 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 13/15 loss 0.5613 val macro-F1 0.9266 acc 0.9389
+2026-10-19 12:45:39,988 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 14/15 loss 0.5609 val macro-F1 0.9322 acc 0.9433
+2026-10-19 12:46:06,169 INFO paddyguard.train.cls_effb0-0-20261019-123812: epoch 15/15 loss 0.5596 val macro-F1 0.9259 acc 0.9370
+2026-10-19 12:46:18,209 INFO paddyguard.train.cls_effb0-0-20261019-123812: test macro-F1 0.9202 balanced acc 0.9163; acceptance {'macro_f1_ok': True, 'min_class_recall_ok': True, 'lowest_recall_class': 'brown_spot', 'lowest_recall': 0.8396946564885496, 'passed': True}

@@ -1,12 +1,16 @@
 # data, run outputs, models (never commit)
 /data/
-/runs/
+/runs/*
 /models/
 *.pt
 *.pth
 *.ckpt
 *.parquet
 .env
+
+# the seed-0 baseline run is tracked so collaborators can start M5 without retraining
+!/runs/cls_effb0-0-20261019-123812/
+!/runs/cls_effb0-0-20261019-123812/*
 
 # python
 __pycache__/

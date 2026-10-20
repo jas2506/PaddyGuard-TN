@@ -1,0 +1,25 @@
+model: efficientnet_b0
+img_size: 224
+epochs: 15
+batch_size: 64
+optimizer:
+  name: adamw
+  lr: 0.0003
+  weight_decay: 0.01
+scheduler:
+  name: cosine
+  warmup_epochs: 1
+loss:
+  name: ce
+  label_smoothing: 0.1
+amp: true
+augmentation: baseline
+seed: 0
+early_stopping:
+  metric: val_macro_f1
+  patience: 4
+pretrained: true
+num_workers: 2
+acceptance:
+  min_macro_f1: 0.9
+  min_class_recall: 0.8

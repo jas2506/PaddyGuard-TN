@@ -7,7 +7,7 @@ Rules:
 - Python 3.10+, type hints, small functions, no notebooks as source of truth (notebooks only call scripts).
 - Everything is config-driven: YAML in configs/, one config per experiment. No magic numbers in code.
 - Fix seeds (python, numpy, torch) from config; log config + git commit + seed with every run.
-- Never commit data, checkpoints or secrets. Paths come from env vars PADDYGUARD_DATA and PADDYGUARD_OUT.
+- Never commit data, checkpoints or secrets (one exception: the seed-0 baseline run folder `runs/cls_effb0-0-20261019-123812/` is tracked so collaborators can start M5 without retraining). Paths come from env vars PADDYGUARD_DATA and PADDYGUARD_OUT.
 - Every script supports --debug (200 images, 1 epoch, CPU) so it can be tested on a laptop.
 - Save per-image predictions (probabilities, not just metrics) for every evaluation so later analysis never needs retraining.
 - Never evaluate on the Kaggle Paddy Doctor unlabeled test set. Never tune on a target-domain test split.
@@ -24,7 +24,7 @@ M0 (utilities), M1 (manifest, dataset card, mask inspection), M2 (duplicates, sp
 
 - `docs/PaddyGuard-TN_Project_Guide.docx` is the companion problem statement/literature/datasets doc (summarised below).
 - `configs/` holds only values stated in the spec. `labelmap.yaml` `T1`/`T2` maps and `advisory.yaml` are deliberately unfilled; `advisory/kb/*.json` do not exist yet (values must be typed in by the developer).
-- Git repo: https://github.com/jas2506/PaddyGuard-TN (branch `main`). `.gitignore` excludes `data/`, `runs/`, `models/`, checkpoints and parquet files.
+- Git repo: https://github.com/jas2506/PaddyGuard-TN (branch `main`). `.gitignore` excludes `data/`, `runs/` (except the baseline run above), `models/`, checkpoints and parquet files.
 - `advisory/kb.py` (module) and `advisory/kb/` (JSON directory) coexist as in the spec; `kb/` has no `__init__.py`.
 
 Commands. Use the project venv `.venv` (gitignored, created with `--system-site-packages`, plus pyarrow and ruff). Run scripts as `PYTHONPATH=src .venv/bin/python -m paddyguard.<module>`; `pytest` adds `src` itself (`pythonpath = ["src"]` in pyproject.toml). Quirk: on this Mac, `.pth` files in the venv's site-packages (the `__editable__` one from `pip install -e .` and any hand-made one) get the macOS `hidden` flag and Python ignores them, so don't rely on them. M1 commands: `python -m paddyguard.data.download` (layout check), `python -m paddyguard.data.manifest [--debug]` (writes `data/manifests/manifest.csv` and `reports/dataset_card.md`), `python -m paddyguard.data.inspect_masks [--debug]`; M2, in this order: `python -m paddyguard.data.dedup`, `.splits`, `.cache` (each takes `--debug`; debug runs use `manifest_debug.csv` and `data/processed_debug/`). M3: `python -m paddyguard.data.labelmap` fills the manifest `label` column (already run). Run `ruff format src tests` after writing code.

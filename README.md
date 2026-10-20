@@ -20,9 +20,10 @@ Paddy disease classifier, severity estimator, conformal abstention layer and a r
 
    - `data/manifests/manifest.csv`: every image with its dataset, label, duplicate group and split
    - `data/processed/`: the resized images (Paddy Doctor and Dhan-Shomadhan short side 256, Sethy at native size, plus Sethy lesion masks)
-   - `runs/cls_effb0-0-20261019-123812/`: the trained seed-0 classifier (`ckpt.pt`) with its metrics and test predictions
 
-   `data/` and `runs/` are git-ignored on purpose. The raw downloads are not in the zip; they are only needed to rebuild `data/processed/` (links in `docs/dataset_description.md`).
+   `data/` is git-ignored on purpose. The raw downloads are not in the zip; they are only needed to rebuild `data/processed/` (links in `docs/dataset_description.md`).
+
+   The trained seed-0 classifier is already in the repo: `runs/cls_effb0-0-20261019-123812/` (`ckpt.pt`, metrics, test predictions). Other run folders are git-ignored, except this one.
 
 3. Point the code at the data and check everything works:
 
